@@ -1,0 +1,8 @@
+{
+  "name": "TalkingBus",
+  "app_id": "3801bcb5",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
