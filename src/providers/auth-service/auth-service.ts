@@ -3,6 +3,20 @@ import { Http } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+export class User {
+  name: string;
+  email: string;
+  login: string;
+  photo: string;
+ 
+  constructor(name: string, email: string, login: string) {
+    this.name = name;
+    this.email = email;
+    this.login = login;
+    //this.photo = photo;
+  }
+}
+
 /*
   Generated class for the AuthServiceProvider provider.
 
@@ -11,14 +25,8 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class AuthServiceProvider {
-  
-  // Change to this http://ed43bb3b.ngrok.io/api/login
-  static readonly LOGIN_URL = 'http://contoh.dev/api/login';
-  // Change to this http://ed43bb3b.ngrok.io/api/register
-  static readonly REGISTER_URL = 'http://contoh.dev/api/register';
-
+  currentUser: User;
   resturl : string = 'https://4p.pelainternet.com.br/rest.php';
-
   access: boolean;
   token: string;
   get: any;
@@ -26,17 +34,47 @@ export class AuthServiceProvider {
 
   constructor(public http: Http) {
   	console.log(this.http);
-/*
-  	this.http.get(this.resturl).map(res => res.json())
-        .subscribe( data => {
-          console.log(data);
-        });
-*/
   }
 
   // Login
   public login(credentials) {
-    if (credentials.email === null || credentials.password === null) {
+    credentials.class = this.class;
+    credentials.method = 'login';
+
+    if (credentials.login === null || credentials.password === null) {
+      return Observable.throw("Please insert credentials.");
+    } else {
+      return Observable.create(observer => {
+
+        this.http.post(this.resturl, credentials)
+        .map(res => res.json())
+        .subscribe( data => {
+          var sucesso = data.sucesso;
+          var retorno = data.retorno;
+          if(sucesso === false){
+            this.access = false;
+          }else{
+            this.access = true;
+            this.currentUser = new User(retorno.name, retorno.email, retorno.login);
+          }
+          console.log(retorno);
+        });
+
+        setTimeout(() => {
+              observer.next(this.access);
+          }, 500);
+
+        setTimeout(() => {
+              observer.complete();
+          }, 1000);
+
+
+      }, err => console.error(err));
+    }
+
+
+/*
+    if (credentials.login === null || credentials.password === null) {
       return Observable.throw("Please insert credentials.");
     } else {
       return Observable.create(observer => {
@@ -63,6 +101,7 @@ export class AuthServiceProvider {
 
       }, err => console.error(err));
     }
+    */
   }
 
   // Register
@@ -71,9 +110,7 @@ export class AuthServiceProvider {
       return Observable.throw("Please insert credentials");
     } else {
 
-      //?class=TalkingBus&method=register
       //var object = JSON.parse(credentials);
-      console.log(credentials);
       
       credentials.class = this.class;
       credentials.method = 'register';
@@ -115,9 +152,14 @@ export class AuthServiceProvider {
     return this.token;
   }
 
+  public getUserInfo() : User {
+    return this.currentUser;
+  }
+
   // Logout
   public logout() {
     return Observable.create(observer => {
+      this.currentUser = null;
       observer.next(true);
       observer.complete();
     });

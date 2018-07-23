@@ -18,7 +18,7 @@ import { HomePage } from '../home/home';
 export class LoginPage {
 
   loading: Loading;
-  registerCredentials = { email: '', password: '' };
+  registerCredentials = { login: '', password: '' };
 
   constructor(
     public nav: NavController,
@@ -33,11 +33,13 @@ export class LoginPage {
 
   public login() {
     this.showLoading()
-    this.auth.login(this.registerCredentials).subscribe(allowed => {
-      if (allowed) {
+    this.auth.login(this.registerCredentials).subscribe(response => {
+      var sucesso = response.sucesso;
+      var retorno = response.retorno;
+      if (sucesso) {
         this.nav.setRoot(HomePage);
       } else {
-        this.showError("These credentials do not match our records.");
+        this.showError(retorno);
       }
     },
       error => {
