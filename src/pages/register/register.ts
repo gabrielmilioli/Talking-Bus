@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the RegisterPage page.
@@ -22,10 +23,12 @@ export class RegisterPage {
   constructor(
     private nav: NavController,
     private auth: AuthServiceProvider,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private storage: Storage
   ) {}
 
   public register() {
+
     if (this.registerCredentials.password != this.registerCredentials.confirmation_password) {
       this.showPopup("Error", 'The password confirmation does not match.');
     } else {

@@ -67,19 +67,22 @@ export class AuthServiceProvider {
 
   // Register
   public register(credentials) {
-    if (credentials.name === null || credentials.email === null || credentials.password === null) {
+    if (credentials.login === null || credentials.name === null || credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
 
-    //?class=TalkingBus&method=register
-    object: object = JSON.stringify(credentials);
-    console.log(object);
-    /*
-    object.class = this.class;
-    object.method = 'register';
-    credentials = JSON.stringify(object);
+      //?class=TalkingBus&method=register
+      //var object = JSON.parse(credentials);
+      console.log(credentials);
+      
+      credentials.class = this.class;
+      credentials.method = 'register';
 
-	return Observable.create(observer => {
+      console.log(credentials);
+      /*
+      credentials = JSON.stringify(object);
+  */
+  	 return Observable.create(observer => {
 
         this.http.post(this.resturl, credentials)
         .map(res => res.json())
@@ -90,7 +93,7 @@ export class AuthServiceProvider {
         observer.next(true);
         observer.complete();
       });
-*/
+
     /*
       return Observable.create(observer => {
 
