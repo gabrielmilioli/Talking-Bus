@@ -8,7 +8,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { RestProvider } from '../providers/rest/rest';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Headers} from '@angular/http';
 
 import { IonicStorageModule } from '@ionic/storage';
 

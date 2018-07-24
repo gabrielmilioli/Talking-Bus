@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, HttpHeaders } from '@angular/http';
+import { Http } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -33,7 +33,7 @@ export class AuthServiceProvider {
   class: string = 'TalkingBus';
 
   constructor(public http: Http) {
-  	console.log(this.http);
+    console.log('Authorization');
   }
 
   // Login
@@ -48,16 +48,16 @@ export class AuthServiceProvider {
 
         this.http.post(this.resturl, credentials, this.getHeaders())
         .map(res => res.json())
-        .subscribe( result => {
-          var status = result.status;
-          var data = result.data;
-          if(status === false){
+        .subscribe( response => {
+          var status = response.status;
+          var data = response.data;
+          if(status === 'success'){
             this.access = false;
           }else{
             this.access = true;
-            this.currentUser = new User(data.name, data.email, data.login);
+            //this.currentUser = new User(data.name, data.email, data.login);
           }
-          console.log(data);
+          
         });
 
         setTimeout(() => {
@@ -165,7 +165,7 @@ export class AuthServiceProvider {
   }
 
   public getHeaders(){
-    let headers = new HttpHeaders();
+    let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
