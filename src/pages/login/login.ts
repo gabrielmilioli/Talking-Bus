@@ -33,13 +33,14 @@ export class LoginPage {
 
   public login() {
     this.showLoading()
-    this.auth.login(this.registerCredentials).subscribe(response => {
+    this.auth.login(this.registerCredentials)
+    .subscribe(response => {
+      console.log(response);
       var status = response.status;
       var data = response.data;
-      console.log(response);
-      if (status === 'success') {
-        //this.nav.setRoot(HomePage);
-
+      
+      if(status === 'success'){
+        this.nav.setRoot(HomePage);
       } else {
         this.showError(data);
       }
