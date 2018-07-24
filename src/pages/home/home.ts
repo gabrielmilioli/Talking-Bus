@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { Http, RequestOptions, Headers } from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { MyApp } from '../../app/app.component';
 
 @Component({
   selector: 'page-home',
@@ -11,26 +9,30 @@ import 'rxjs/add/operator/map';
 })
 export class HomePage {
 
-  users;
+  users: any;
 
-  constructor(private nav: NavController, private auth: AuthServiceProvider, public http:Http) {
-    this.getUsers();
+  constructor(private nav: NavController, private auth: AuthServiceProvider, private app: MyApp) {
+    //this.getUsers();
+    console.log(this);
   }
 
   public getUsers() {
-    let headers = new Headers(
-    {
-      'Authorization' : this.auth.getToken()
-    });
-
-    let options = new RequestOptions({ headers: headers });
-    // Change to this http://ed43bb3b.ngrok.io/api/users
-    let url = 'http://contoh.dev/api/users';
-    this.http.get(url, options).map(res => res.json()).subscribe(
-      data => {
-        this.users = data.data;
+    this.app.showLoading();
+    this.auth.getUsers()
+    .subscribe(response => {
+      
+      var status = response.status;
+      var data = response.data;
+      console.log(data);
+      if(status === 'success'){
+        this.users = data;
+      } else {
+        this.app.showError(data);
       }
-    );
+    },
+      error => {
+        this.app.showError(error);
+      });
   }
 
   public logout() {

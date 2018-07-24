@@ -3,20 +3,6 @@ import { Http, Headers } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-export class User {
-  name: string;
-  email: string;
-  login: string;
-  photo: string;
- 
-  constructor(name: string, email: string, login: string) {
-    this.name = name;
-    this.email = email;
-    this.login = login;
-    //this.photo = photo;
-  }
-}
-
 /*
   Generated class for the AuthServiceProvider provider.
 
@@ -25,7 +11,6 @@ export class User {
 */
 @Injectable()
 export class AuthServiceProvider {
-  currentUser: User;
   resturl : string = 'https://4p.pelainternet.com.br/rest.php';
   access: boolean;
   token: string;
@@ -36,14 +21,14 @@ export class AuthServiceProvider {
 
   constructor(public http: Http) {
     console.log('Authorization');
-    this.getHeaders();
+    //this.getHeaders();
   }
 
   // Login
   public login(credentials) {
     credentials.class = this.class;
     credentials.method = 'login';
-    
+
     if (credentials.login === null || credentials.password === null) {
       return Observable.throw("Please insert credentials.");
     } else {
@@ -56,15 +41,14 @@ export class AuthServiceProvider {
           this.data = response;
           
           if(status === 'success'){
-            this.access = false;
-          }else{
             this.access = true;
-            //this.currentUser = new User(data.name, data.email, data.login);
+          }else{
+            this.access = false;
           }
         });
 
         setTimeout(() => {
-              observer.next(this.data);
+            observer.next(this.data);
           }, 500);
 
         setTimeout(() => {
@@ -112,8 +96,9 @@ export class AuthServiceProvider {
     return this.token;
   }
 
-  public getUserInfo() : User {
-    return this.currentUser;
+  // Get Access
+  public getAccess() {
+    return this.access;
   }
 
   // Logout
@@ -135,15 +120,43 @@ export class AuthServiceProvider {
     headers.append('Accept', 'application/json');
     headers.append('Authorization', 'Basic' + btoa('talkingbus' + ":" + 'zx96@28#'));
 
-    var header = {
-      //'Content-Type': 'application/json',
-      //'Access-Control-Allow-Origin': '*',
-      //'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, DELETE, PUT',
-      //'Access-Control-Allow-Headers': 'X-Requested-With',
-      'Authorization': 'Basic' + btoa('talkingbus' + ":" + 'zx96@28#')
-    };
-    console.log(headers);
+    //console.log(headers);
     return headers;
   }
+
+
+
+
+  // Login
+  public getUsers() {
+    var credentials = {"class": this.class, "method": "get_users"};
+  
+    return Observable.create(observer => {
+
+      this.http.post(this.resturl, credentials,  { headers: this.getHeaders() })
+      .map(res => res.json())
+      .subscribe( response => {
+        var status = response.status;
+        this.data = response;
+        
+        if(status === 'success'){
+          this.access = true;
+        }else{
+          this.access = false;
+        }
+      });
+
+      setTimeout(() => {
+          observer.next(this.data);
+        }, 500);
+
+      setTimeout(() => {
+            observer.complete();
+        }, 1000);
+
+    }, err => console.error(err));
+
+  }
+
 
 }
