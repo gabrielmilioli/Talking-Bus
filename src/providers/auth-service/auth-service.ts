@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, HttpHeaders } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -46,18 +46,18 @@ export class AuthServiceProvider {
     } else {
       return Observable.create(observer => {
 
-        this.http.post(this.resturl, credentials)
+        this.http.post(this.resturl, credentials, this.getHeaders())
         .map(res => res.json())
-        .subscribe( data => {
-          var sucesso = data.sucesso;
-          var retorno = data.retorno;
-          if(sucesso === false){
+        .subscribe( result => {
+          var status = result.status;
+          var data = result.data;
+          if(status === false){
             this.access = false;
           }else{
             this.access = true;
-            this.currentUser = new User(retorno.name, retorno.email, retorno.login);
+            this.currentUser = new User(data.name, data.email, data.login);
           }
-          console.log(retorno);
+          console.log(data);
         });
 
         setTimeout(() => {
@@ -67,7 +67,6 @@ export class AuthServiceProvider {
         setTimeout(() => {
               observer.complete();
           }, 1000);
-
 
       }, err => console.error(err));
     }
@@ -163,6 +162,19 @@ export class AuthServiceProvider {
       observer.next(true);
       observer.complete();
     });
+  }
+
+  public getHeaders(){
+    let headers = new HttpHeaders();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, DELETE, PUT');
+    headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Headers', 'X-Requested-With');
+    headers.append('Authorization', 'Basic' + btoa('talkingbus' + ":" + 'zx96@28#'));
+
+    return headers;
   }
 
 }
