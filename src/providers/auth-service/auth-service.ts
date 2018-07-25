@@ -39,12 +39,6 @@ export class AuthServiceProvider {
         .subscribe( response => {
           var status = response.status;
           this.data = response;
-          
-          if(status === 'success'){
-            this.access = true;
-          }else{
-            this.access = false;
-          }
         });
 
         setTimeout(() => {
@@ -91,25 +85,6 @@ export class AuthServiceProvider {
     }
   }
 
-  // Get Token
-  public getToken() {
-    return this.token;
-  }
-
-  // Get Access
-  public getAccess() {
-    return this.access;
-  }
-
-  // Logout
-  public logout() {
-    return Observable.create(observer => {
-      this.currentUser = null;
-      observer.next(true);
-      observer.complete();
-    });
-  }
-
   public getHeaders(){
     let headers = new Headers();
 
@@ -129,7 +104,7 @@ export class AuthServiceProvider {
 
   // Login
   public getUsers() {
-    var credentials = {"class": this.class, "method": "get_users"};
+    var credentials = {"class": this.class, "method": "getUsers"};
   
     return Observable.create(observer => {
 
@@ -138,12 +113,6 @@ export class AuthServiceProvider {
       .subscribe( response => {
         var status = response.status;
         this.data = response;
-        
-        if(status === 'success'){
-          this.access = true;
-        }else{
-          this.access = false;
-        }
       });
 
       setTimeout(() => {

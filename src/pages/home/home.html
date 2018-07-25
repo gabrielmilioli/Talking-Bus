@@ -1,12 +1,13 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary" center>
+
     <ion-buttons start>
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
 
-    <ion-title color="primary" center>
+    <ion-title>
       Member Area
     </ion-title>
 
@@ -15,6 +16,7 @@
         <ion-icon name="log-out"></ion-icon>
       </button>
     </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
@@ -25,4 +27,11 @@
   </ion-list-header>
   <ion-item *ngFor="let user of users">{{ user.name }}</ion-item>
 </ion-list>
+
+<ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="dots">
+    </ion-refresher-content>
+  </ion-refresher>
+
 </ion-content>

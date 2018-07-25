@@ -5,12 +5,16 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { RestProvider } from '../providers/rest/rest';
 import { HttpModule, Headers} from '@angular/http';
 
 import { IonicStorageModule } from '@ionic/storage';
+
+import { Tab2Page } from '../pages/tab2/tab2';
+import { Tab1Page } from '../pages/tab1/tab1';
+import { TabsPage } from '../pages/tabs/tabs';
+import { HomePage } from '../pages/home/home';
 
 @NgModule({
   declarations: [

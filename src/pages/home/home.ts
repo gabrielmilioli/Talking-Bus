@@ -12,18 +12,17 @@ export class HomePage {
   users: any;
 
   constructor(private nav: NavController, private auth: AuthServiceProvider, private app: MyApp) {
-    //this.getUsers();
-    console.log(this);
+    this.getUsers();
+    //console.log(this);
   }
 
   public getUsers() {
-    this.app.showLoading();
+    this.app.block();
     this.auth.getUsers()
     .subscribe(response => {
-      
       var status = response.status;
       var data = response.data;
-      console.log(data);
+      
       if(status === 'success'){
         this.users = data;
       } else {
@@ -33,12 +32,19 @@ export class HomePage {
       error => {
         this.app.showError(error);
       });
+    this.app.unblock();
   }
 
   public logout() {
-    this.auth.logout().subscribe(succ => {
-      this.nav.setRoot('LoginPage')
-    });
+    this.nav.setRoot('LoginPage');
+    // limpar storage
+  }
+
+  doRefresh(refresher) {
+    setTimeout(() => {
+      refresher.complete();
+      this.getUsers();
+    }, 1000);
   }
 
 }

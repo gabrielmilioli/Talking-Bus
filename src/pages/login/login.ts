@@ -18,7 +18,6 @@ import { MyApp } from '../../app/app.component';
 })
 export class LoginPage {
 
-  loading: Loading;
   registerCredentials = { login: '', password: '' };
 
   constructor(
@@ -26,7 +25,11 @@ export class LoginPage {
     private auth: AuthServiceProvider,
     private app: MyApp
   ) {
-    //console.log(this.app);
+    //this.app.setAccess(true);
+    //console.log(this.app.getAccess());
+    if(this.app.getStorage('access')){
+      this.nav.setRoot('MenuPage');
+    }
   }
 
   public createAccount() {
@@ -34,7 +37,7 @@ export class LoginPage {
   }
 
   public login() {
-    this.app.showLoading();
+    this.app.block();
     this.auth.login(this.registerCredentials)
     .subscribe(response => {
       
@@ -43,14 +46,29 @@ export class LoginPage {
       //console.log(data);
       if(status === 'success'){
         this.app.setUser(data);
-        this.nav.setRoot(HomePage);
+        this.app.setStorage('access', true);
+        this.nav.setRoot('MenuPage');
       } else {
+        this.app.setStorage('access', false);
         this.app.showError(data);
       }
     },
       error => {
         this.app.showError(error);
       });
+    this.app.unblock();
   }
+
+
+  // Logout
+  public logout() {
+    return Observable.create(observer => {
+      // clear storage etc
+      this.currentUser = null;
+      observer.next(true);
+      observer.complete();
+    });
+  }
+
 
 }
