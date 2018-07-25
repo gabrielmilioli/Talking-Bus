@@ -16,3 +16,6 @@ ionic g page nomepagina
 
 // api google maps ios e android AIzaSyAUAFVJvdhmnrhTR4vuuIwRF_rr_SLEdGM
 ionic cordova plugin add https://github.com/mapsplugin/cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyAUAFVJvdhmnrhTR4vuuIwRF_rr_SLEdGM" --variable API_KEY_FOR_IOS="AIzaSyAUAFVJvdhmnrhTR4vuuIwRF_rr_SLEdGM"
+
+
+// keytool -genkeypair -v -keystore C:\Users\gabi\Desktop\Talking-Bus\src\talkingbus.keystore -alias talkingbus -keyalg RSA -keysize 2048 -validity 10000
