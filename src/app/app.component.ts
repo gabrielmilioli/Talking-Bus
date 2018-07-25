@@ -8,13 +8,9 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
 
   rootPage:any = 'LoginPage';
   loading: Loading;
-  pages: PageInterface[] = [
-    { title: 'Home', pageName: 'HomePage', tabComponent: 'HomePage', index: 0, icon: 'home' }
-  ];
 
   user: any;
 
@@ -35,24 +31,6 @@ export class MyApp {
       this.user = this.getUser();
     });
 
-  }
-
-  openPage(page: PageInterface) {
-    let params = {};
- 
-    // The index is equal to the order of our tabs inside tabs.ts
-    if (page.index) {
-      params = { tabIndex: page.index };
-    }
- 
-    // The active child nav is our Tabs Navigation
-    if (this.nav.getActiveChildNav() && page.index != undefined) {
-      this.nav.getActiveChildNav().select(page.index);
-    } else {
-      // Tabs are not active, so reset the root page 
-      // In this case: moving to or from SpecialPage
-      this.nav.setRoot(page.pageName, params);
-    }
   }
 
   block(text = '') {
@@ -94,7 +72,7 @@ export class MyApp {
     this.user = currentUser;
 
     this.setStorage('user', currentUser);
-    
+
     this.setStorage('id', user.id);
     this.setStorage('name', user.name);
     this.setStorage('email', user.email);
@@ -114,6 +92,12 @@ export class MyApp {
 
   public setStorage(name, value){
     window.localStorage.setItem(name, value);
+  }
+
+  public logout() {
+    window.localStorage.clear();
+    this.nav.setRoot('LoginPage');
+    // limpar storage
   }
 
 }

@@ -4,6 +4,7 @@ import { Tab2Page } from './../tab2/tab2';
 import { Tab1Page } from './../tab1/tab1';
 import { TabsPage } from './../tabs/tabs';
 import { MapPage } from './../map/map';
+import { MyApp } from '../../app/app.component';
  
 export interface PageInterface {
   title: string;
@@ -20,7 +21,7 @@ export interface PageInterface {
 })
 export class MenuPage {
   // Basic root for our content view
-  rootPage = 'TabsPage';
+  rootPage = 'MapPage';
   name = window.localStorage.getItem('name');
  
   // Reference to the app's root nav
@@ -34,8 +35,12 @@ export class MenuPage {
     { title: 'Special', pageName: 'SpecialPage', icon: 'shuffle' }
   ];
  
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController, private app: MyApp) { }
  
+  logout() {
+    this.app.logout();
+  }
+
   openPage(page: PageInterface) {
     let params = {};
  

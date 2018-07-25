@@ -35,11 +35,6 @@ export class HomePage {
     this.app.unblock();
   }
 
-  public logout() {
-    this.nav.setRoot('LoginPage');
-    // limpar storage
-  }
-
   doRefresh(refresher) {
     setTimeout(() => {
       refresher.complete();

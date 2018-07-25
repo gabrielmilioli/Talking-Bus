@@ -50,7 +50,9 @@ import { IonicPage, NavController, NavParams,
      };
  
      this.map = this.googleMaps.create('map_canvas', mapOptions);
-     
+     console.log(this.map.getMyLocation());
+     this.mapReady = true;
+     /*
      // Wait the MAP_READY before using any methods.
     this.map.one(GoogleMapsEvent.MAP_READY)
     .then(() => {
@@ -71,7 +73,7 @@ import { IonicPage, NavController, NavParams,
           alert('clicked');
         });
       });
-    });
+    });*/
   }
  
   onButtonClick() {

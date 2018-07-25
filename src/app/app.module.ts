@@ -16,6 +16,8 @@ import { Tab1Page } from '../pages/tab1/tab1';
 import { TabsPage } from '../pages/tabs/tabs';
 import { HomePage } from '../pages/home/home';
 
+import { GoogleMaps } from '@ionic-native/google-maps';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -46,7 +48,8 @@ import { HomePage } from '../pages/home/home';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-    RestProvider
+    RestProvider,
+    GoogleMaps
   ]
 })
 export class AppModule {}
